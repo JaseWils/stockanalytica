@@ -36,10 +36,26 @@ const App = () => {
   const fetchStocks = async () => {
     try {
       setLoading(true);
+      console.log('Fetching stocks from API...');
       const { data } = await stocksAPI.getAll({ sector: selectedSector, search: searchTerm });
-      setStocks(data);
+      console.log('Stocks received:', data);
+      
+      // Filter out any null/undefined stocks and ensure all required fields exist
+      const validStocks = (Array.isArray(data) ? data : []).filter(stock => 
+        stock && 
+        stock._id && 
+        stock.symbol && 
+        stock.name && 
+        stock.sector &&
+        stock.currentPrice !== undefined
+      );
+      
+      console.log('Valid stocks count:', validStocks.length);
+      setStocks(validStocks);
     } catch (error) {
       console.error('Error fetching stocks:', error);
+      console.error('Error details:', error.response);
+      setStocks([]);
     } finally {
       setLoading(false);
     }
@@ -48,18 +64,20 @@ const App = () => {
   const fetchPortfolio = async () => {
     try {
       const { data } = await portfolioAPI.get();
-      setPortfolio(data);
+      setPortfolio(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching portfolio:', error);
+      setPortfolio([]);
     }
   };
 
   const fetchTransactions = async () => {
     try {
       const { data } = await portfolioAPI.getTransactions();
-      setTransactions(data);
+      setTransactions(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching transactions:', error);
+      setTransactions([]);
     }
   };
 
@@ -67,15 +85,26 @@ const App = () => {
     if (user) {
       fetchStocks();
     }
-  }, [selectedSector, searchTerm]);
+  }, [selectedSector, searchTerm, user]);
 
-  const sectors = ['all', ...new Set(stocks.map(s => s.sector))];
+  const sectors = useMemo(() => {
+    const uniqueSectors = new Set(
+      stocks
+        .filter(s => s && s.sector)
+        .map(s => s.sector)
+    );
+    return ['all', ...Array.from(uniqueSectors)];
+  }, [stocks]);
 
   const filteredStocks = useMemo(() => {
     return stocks.filter(stock => {
+      if (!stock || !stock.sector || !stock.name || !stock.symbol) return false;
+      
       const matchesSector = selectedSector === 'all' || stock.sector === selectedSector;
-      const matchesSearch = stock.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                           stock.symbol.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = 
+        stock.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        stock.symbol.toLowerCase().includes(searchTerm.toLowerCase());
+      
       return matchesSector && matchesSearch;
     });
   }, [stocks, selectedSector, searchTerm]);
@@ -360,48 +389,71 @@ const App = () => {
 
             {/* Stock Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredStocks.map(stock => (
-                <div
-                  key={stock._id}
-                  className={`bg-slate-800/50 backdrop-blur-sm border rounded-xl p-5 hover:border-blue-500/50 transition-all cursor-pointer ${getRiskBg(stock.risk)}`}
-                  onClick={() => setSelectedStock(stock)}
-                >
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="text-lg font-bold">{stock.symbol}</h3>
-                      <p className="text-xs text-slate-400">{stock.name}</p>
-                      <span className="text-xs px-2 py-1 bg-slate-700 rounded mt-1 inline-block">{stock.sector}</span>
-                    </div>
-                    <div className={`flex items-center gap-1 text-sm font-semibold ${stock.change >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                      {stock.change >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-                      {Math.abs(stock.change)}%
-                    </div>
-                  </div>
-                  
-                  <div className="mb-3">
-                    <div className="text-2xl font-bold">${stock.currentPrice?.toFixed(2)}</div>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-2 text-xs">
-                    <div>
-                      <div className="text-slate-400">Volume</div>
-                      <div className="font-semibold">{stock.volume}</div>
-                    </div>
-                    <div>
-                      <div className="text-slate-400">P/E</div>
-                      <div className="font-semibold">{stock.pe}</div>
-                    </div>
-                    <div>
-                      <div className="text-slate-400">Risk</div>
-                      <div className={`font-semibold capitalize ${getRiskColor(stock.risk)}`}>{stock.risk}</div>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 pt-3 border-t border-slate-700">
-                    <div className="text-xs text-slate-400">Market Cap: {stock.marketCap}</div>
-                  </div>
+              {filteredStocks.length === 0 ? (
+                <div className="col-span-full text-center py-12">
+                  <Activity className="w-16 h-16 mx-auto mb-4 text-slate-600" />
+                  <p className="text-slate-400 text-lg">
+                    {loading ? 'Loading stocks...' : 'No stocks available. Please seed the database.'}
+                  </p>
+                  {!loading && (
+                    <p className="text-slate-500 text-sm mt-2">
+                      Visit: <code className="bg-slate-800 px-2 py-1 rounded">http://localhost:5000/api/stocks/seed</code>
+                    </p>
+                  )}
                 </div>
-              ))}
+              ) : (
+                filteredStocks.map(stock => {
+                  // Extra safety check
+                  if (!stock || !stock._id) return null;
+
+                  return (
+                    <div
+                      key={stock._id}
+                      className={`bg-slate-800/50 backdrop-blur-sm border rounded-xl p-5 hover:border-blue-500/50 transition-all cursor-pointer ${getRiskBg(stock.risk || 'medium')}`}
+                      onClick={() => setSelectedStock(stock)}
+                    >
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <h3 className="text-lg font-bold">{stock.symbol || 'N/A'}</h3>
+                          <p className="text-xs text-slate-400">{stock.name || 'Unknown'}</p>
+                          <span className="text-xs px-2 py-1 bg-slate-700 rounded mt-1 inline-block">
+                            {stock.sector || 'Unknown'}
+                          </span>
+                        </div>
+                        <div className={`flex items-center gap-1 text-sm font-semibold ${(stock.change || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                          {(stock.change || 0) >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
+                          {Math.abs(stock.change || 0)}%
+                        </div>
+                      </div>
+                      
+                      <div className="mb-3">
+                        <div className="text-2xl font-bold">${(stock.currentPrice || 0).toFixed(2)}</div>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-2 text-xs">
+                        <div>
+                          <div className="text-slate-400">Volume</div>
+                          <div className="font-semibold">{stock.volume || 'N/A'}</div>
+                        </div>
+                        <div>
+                          <div className="text-slate-400">P/E</div>
+                          <div className="font-semibold">{stock.pe || 'N/A'}</div>
+                        </div>
+                        <div>
+                          <div className="text-slate-400">Risk</div>
+                          <div className={`font-semibold capitalize ${getRiskColor(stock.risk || 'medium')}`}>
+                            {stock.risk || 'medium'}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 pt-3 border-t border-slate-700">
+                        <div className="text-xs text-slate-400">Market Cap: {stock.marketCap || 'N/A'}</div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </>
         ) : activeTab === 'portfolio' ? (
@@ -414,7 +466,7 @@ const App = () => {
                   <span className="text-sm text-slate-400">Total Value</span>
                 </div>
                 <div className="text-3xl font-bold">
-                  ${portfolio.reduce((sum, p) => sum + p.currentValue, 0).toFixed(2)}
+                  ${portfolio.reduce((sum, p) => sum + (p.currentValue || 0), 0).toFixed(2)}
                 </div>
               </div>
               <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 border border-purple-500/30 rounded-xl p-6">
@@ -429,8 +481,8 @@ const App = () => {
                   <TrendingUp className="w-5 h-5 text-emerald-400" />
                   <span className="text-sm text-slate-400">Total P&L</span>
                 </div>
-                <div className={`text-3xl font-bold ${portfolio.reduce((sum, p) => sum + p.profitLoss, 0) >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                  ${portfolio.reduce((sum, p) => sum + p.profitLoss, 0).toFixed(2)}
+                <div className={`text-3xl font-bold ${portfolio.reduce((sum, p) => sum + (p.profitLoss || 0), 0) >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                  ${portfolio.reduce((sum, p) => sum + (p.profitLoss || 0), 0).toFixed(2)}
                 </div>
               </div>
             </div>
@@ -445,23 +497,30 @@ const App = () => {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {portfolio.map(holding => (
-                    <div key={holding.stock._id} className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-bold text-lg">{holding.stock.symbol}</h3>
-                          <p className="text-sm text-slate-400">{holding.stock.name}</p>
-                          <p className="text-xs text-slate-500 mt-1">{holding.quantity} shares @ ${holding.avgPrice.toFixed(2)}</p>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-xl font-bold">${holding.currentValue.toFixed(2)}</div>
-                          <div className={`text-sm font-semibold ${holding.profitLoss >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                            {holding.profitLoss >= 0 ? '+' : ''}{holding.profitLoss.toFixed(2)} ({((holding.profitLoss / (holding.avgPrice * holding.quantity)) * 100).toFixed(2)}%)
+                  {portfolio.map(holding => {
+                    if (!holding || !holding.stock) return null;
+                    
+                    return (
+                      <div key={holding.stock._id} className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h3 className="font-bold text-lg">{holding.stock.symbol}</h3>
+                            <p className="text-sm text-slate-400">{holding.stock.name}</p>
+                            <p className="text-xs text-slate-500 mt-1">
+                              {holding.quantity} shares @ ${(holding.avgPrice || 0).toFixed(2)}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xl font-bold">${(holding.currentValue || 0).toFixed(2)}</div>
+                            <div className={`text-sm font-semibold ${(holding.profitLoss || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                              {(holding.profitLoss || 0) >= 0 ? '+' : ''}{(holding.profitLoss || 0).toFixed(2)} 
+                              ({(((holding.profitLoss || 0) / ((holding.avgPrice || 1) * (holding.quantity || 1))) * 100).toFixed(2)}%)
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -476,32 +535,36 @@ const App = () => {
               </div>
             ) : (
               <div className="space-y-3">
-                {transactions.map(trans => (
-                  <div key={trans._id} className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                            trans.type === 'buy' ? 'bg-blue-500/20 text-blue-400' : 'bg-orange-500/20 text-orange-400'
-                          }`}>
-                            {trans.type.toUpperCase()}
-                          </span>
-                          <h3 className="font-bold">{trans.stock.symbol}</h3>
+                {transactions.map(trans => {
+                  if (!trans || !trans.stock) return null;
+                  
+                  return (
+                    <div key={trans._id} className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                              trans.type === 'buy' ? 'bg-blue-500/20 text-blue-400' : 'bg-orange-500/20 text-orange-400'
+                            }`}>
+                              {(trans.type || 'buy').toUpperCase()}
+                            </span>
+                            <h3 className="font-bold">{trans.stock.symbol}</h3>
+                          </div>
+                          <p className="text-sm text-slate-400 mt-1">
+                            {trans.quantity} shares @ ${(trans.pricePerShare || 0).toFixed(2)}
+                          </p>
+                          <p className="text-xs text-slate-500 mt-1">
+                            {new Date(trans.createdAt).toLocaleString()}
+                          </p>
                         </div>
-                        <p className="text-sm text-slate-400 mt-1">
-                          {trans.quantity} shares @ ${trans.pricePerShare.toFixed(2)}
-                        </p>
-                        <p className="text-xs text-slate-500 mt-1">
-                          {new Date(trans.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-bold">${trans.totalAmount.toFixed(2)}</div>
-                        <div className="text-xs text-slate-400">Commission: ${trans.commission.toFixed(2)}</div>
+                        <div className="text-right">
+                          <div className="font-bold">${(trans.totalAmount || 0).toFixed(2)}</div>
+                          <div className="text-xs text-slate-400">Commission: ${(trans.commission || 0).toFixed(2)}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -518,11 +581,11 @@ const App = () => {
               <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
                 <div className="flex justify-between mb-2">
                   <span className="text-slate-400">Current Price</span>
-                  <span className="font-bold text-xl">${selectedStock.currentPrice?.toFixed(2)}</span>
+                  <span className="font-bold text-xl">${(selectedStock.currentPrice || 0).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-slate-400">Sector</span>
-                  <span>{selectedStock.sector}</span>
+                  <span>{selectedStock.sector || 'Unknown'}</span>
                 </div>
               </div>
 
@@ -540,15 +603,15 @@ const App = () => {
               <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4 space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-slate-400">Subtotal</span>
-                  <span>${(selectedStock.currentPrice * quantity).toFixed(2)}</span>
+                  <span>${((selectedStock.currentPrice || 0) * quantity).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-slate-400">Commission (4%)</span>
-                  <span className="text-red-400">${calculateCommission(selectedStock.currentPrice * quantity).toFixed(2)}</span>
+                  <span className="text-red-400">${calculateCommission((selectedStock.currentPrice || 0) * quantity).toFixed(2)}</span>
                 </div>
                 <div className="border-t border-slate-700 pt-2 flex justify-between font-bold">
                   <span>Total</span>
-                  <span>${(selectedStock.currentPrice * quantity + calculateCommission(selectedStock.currentPrice * quantity)).toFixed(2)}</span>
+                  <span>${((selectedStock.currentPrice || 0) * quantity + calculateCommission((selectedStock.currentPrice || 0) * quantity)).toFixed(2)}</span>
                 </div>
               </div>
             </div>
