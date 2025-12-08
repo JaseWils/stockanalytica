@@ -2,22 +2,47 @@
 
 <div align="center">
 
-![StockAnalytica Logo](https://img.shields.io/badge/Stock-Analytica-blue?style=for-the-badge&logo=trending-up)
+![StockAnalytica Logo](logo.png)
 
 **Professional Stock Market Analysis & Trading Platform**
 
+<!-- Build Status -->
+[![CI/CD](https://github.com/JaseWils/stockanalytica/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/JaseWils/stockanalytica/actions)
+[![Build Status](https://img.shields.io/github/workflow/status/JaseWils/stockanalytica/CI)](https://github.com/JaseWils/stockanalytica/actions)
+
+<!-- Repository Stats -->
 [![GitHub Stars](https://img.shields.io/github/stars/JaseWils/stockanalytica?style=social)](https://github.com/JaseWils/stockanalytica/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/JaseWils/stockanalytica?style=social)](https://github.com/JaseWils/stockanalytica/network/members)
 [![GitHub Issues](https://img.shields.io/github/issues/JaseWils/stockanalytica)](https://github.com/JaseWils/stockanalytica/issues)
-[![GitHub License](https://img.shields.io/github/license/JaseWils/stockanalytica)](https://github.com/JaseWils/stockanalytica/blob/main/LICENSE)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/JaseWils/stockanalytica)](https://github.com/JaseWils/stockanalytica/pulls)
 
+<!-- Code Quality -->
+[![Maintainability](https://img.shields.io/codeclimate/maintainability/JaseWils/stockanalytica)](https://codeclimate.com/github/JaseWils/stockanalytica)
+[![Code Coverage](https://img.shields.io/codecov/c/github/JaseWils/stockanalytica)](https://codecov.io/gh/JaseWils/stockanalytica)
+[![Dependencies](https://img.shields.io/librariesio/github/JaseWils/stockanalytica)](https://libraries.io/github/JaseWils/stockanalytica)
+
+<!-- License & Version -->
+[![GitHub License](https://img.shields.io/github/license/JaseWils/stockanalytica)](https://github.com/JaseWils/stockanalytica/blob/main/LICENSE)
+[![Version](https://img.shields.io/github/package-json/v/JaseWils/stockanalytica?filename=frontend%2Fpackage.json)](https://github.com/JaseWils/stockanalytica)
+[![Last Commit](https://img.shields.io/github/last-commit/JaseWils/stockanalytica)](https://github.com/JaseWils/stockanalytica/commits/main)
+
+<!-- Tech Stack -->
 [![React](https://img.shields.io/badge/React-18.x-61DAFB?style=flat&logo=react&logoColor=white)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-16.x-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-16.x+-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.x-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Express](https://img.shields.io/badge/Express-4.x-000000?style=flat&logo=express&logoColor=white)](https://expressjs.com/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-3.x-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![JWT](https://img.shields.io/badge/JWT-Auth-000000?style=flat&logo=json-web-tokens&logoColor=white)](https://jwt.io/)
 
-[Live Demo](#) • [Documentation](#) • [Report Bug](https://github.com/JaseWils/stockanalytica/issues) • [Request Feature](https://github.com/JaseWils/stockanalytica/issues)
+<!-- Social & Links -->
+[![Website](https://img.shields.io/badge/Website-Live-brightgreen?style=flat&logo=vercel)](https://stockanalytica.vercel.app)
+[![Documentation](https://img.shields.io/badge/Docs-Read-blue?style=flat&logo=read-the-docs&logoColor=white)](https://github.com/JaseWils/stockanalytica/wiki)
+[![Discord](https://img.shields.io/discord/YOUR_DISCORD_ID?label=Discord&logo=discord&logoColor=white)](https://discord.gg/your-invite)
+
+[🚀 Live Demo](https://stockanalytica.vercel.app) • 
+[📖 Documentation](https://github.com/JaseWils/stockanalytica/wiki) • 
+[🐛 Report Bug](https://github.com/JaseWils/stockanalytica/issues) • 
+[✨ Request Feature](https://github.com/JaseWils/stockanalytica/issues)
 
 </div>
 
