@@ -7,7 +7,7 @@
 **Professional Stock Market Analysis & Trading Platform**
 
 <!-- Build Status -->
-[![CI/CD](https://github.com/JaseWils/stockanalytica/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/JaseWils/stockanalytica/actions)
+![CI/CD](https://github.com/JaseWils/stockanalytica/actions/workflows/ci.yml/badge.svg)
 [![Build Status](https://img.shields.io/github/workflow/status/JaseWils/stockanalytica/CI)](https://github.com/JaseWils/stockanalytica/actions)
 
 <!-- Repository Stats -->
