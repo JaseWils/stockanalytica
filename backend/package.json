@@ -1,12 +1,15 @@
 {
-  "name": "backend",
+  "name": "stockanalytica-backend",
   "version": "1.0.0",
-  "description": "StockAnalytica Backend",
+  "description": "Stock trading platform backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
+  "keywords": ["stock", "trading", "api"],
+  "author": "Bisha Mitra",
+  "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
     "mongoose": "^8.0.3",
