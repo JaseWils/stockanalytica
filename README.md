@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![StockAnalytica Logo](logo.png)
+![StockAnalytica Logo](screenshots/ascii-art.txt)
 
 **Professional Stock Market Analysis & Trading Platform**
 
