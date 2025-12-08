@@ -1,74 +1,63 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const Stock = require("../models/Stock");
+const Stock = require('../models/Stock');
 
-/* --------------------------------------------------
-   SEED ROUTE — MUST BE AT TOP
--------------------------------------------------- */
-router.get("/seed", async (req, res) => {
+// Get all stocks
+router.get('/', async (req, res) => {
   try {
-    const sampleStocks = [
-      {
-        symbol: "AAPL",
-        name: "Apple Inc.",
-        sector: "Technology",
-        currentPrice: 190.12,
-        change: 1.25,
-        volume: "98000000",          // FIXED (String)
-        pe: 32.5,
-        marketCap: "2900000000000",  // FIXED (String)
-        risk: "low",                  // FIXED (enum lowercase)
-        lastUpdated: new Date(),
-      },
-      {
-        symbol: "MSFT",
-        name: "Microsoft Corp.",
-        sector: "Technology",
-        currentPrice: 380.55,
-        change: -0.85,
-        volume: "22000000",          // FIXED (String)
-        pe: 34.1,
-        marketCap: "3100000000000",  // FIXED (String)
-        risk: "low",                 // FIXED (enum lowercase)
-        lastUpdated: new Date(),
-      },
+    const { sector, search } = req.query;
+    let query = {};
+
+    if (sector && sector !== 'all') {
+      query.sector = sector;
+    }
+
+    if (search) {
+      query.$or = [
+        { symbol: { $regex: search, $options: 'i' } },
+        { name: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    const stocks = await Stock.find(query);
+    res.json(stocks);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get single stock
+router.get('/:id', async (req, res) => {
+  try {
+    const stock = await Stock.findById(req.params.id);
+    if (!stock) {
+      return res.status(404).json({ error: 'Stock not found' });
+    }
+    res.json(stock);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Seed initial stocks (for development)
+router.post('/seed', async (req, res) => {
+  try {
+    const seedStocks = [
+      { symbol: 'TECH01', name: 'TechCorp Inc', sector: 'Technology', currentPrice: 245.67, change: 5.2, volume: '2.4M', pe: 28.5, marketCap: '150B', risk: 'high' },
+      { symbol: 'AUTO01', name: 'AutoDrive Motors', sector: 'Automobile', currentPrice: 89.32, change: -2.1, volume: '1.8M', pe: 15.2, marketCap: '45B', risk: 'low' },
+      { symbol: 'OIL01', name: 'Global Energy Corp', sector: 'Oil & Gas', currentPrice: 156.78, change: 3.4, volume: '3.1M', pe: 12.8, marketCap: '200B', risk: 'medium' },
+      { symbol: 'TECH02', name: 'CloudNet Systems', sector: 'Technology', currentPrice: 312.45, change: 8.7, volume: '1.2M', pe: 45.3, marketCap: '80B', risk: 'high' },
+      { symbol: 'AUTO02', name: 'ElectricWheels Co', sector: 'Automobile', currentPrice: 178.90, change: 4.5, volume: '900K', pe: 38.7, marketCap: '65B', risk: 'high' },
+      { symbol: 'OIL02', name: 'PetroMax Industries', sector: 'Oil & Gas', currentPrice: 92.15, change: -1.8, volume: '2.7M', pe: 10.5, marketCap: '120B', risk: 'low' },
+      { symbol: 'PHARM01', name: 'MediLife Pharma', sector: 'Pharmaceuticals', currentPrice: 267.33, change: 2.9, volume: '1.5M', pe: 22.4, marketCap: '95B', risk: 'medium' },
+      { symbol: 'FIN01', name: 'GlobalBank Corp', sector: 'Finance', currentPrice: 134.56, change: -0.5, volume: '3.5M', pe: 14.7, marketCap: '180B', risk: 'low' }
     ];
 
     await Stock.deleteMany({});
-    await Stock.insertMany(sampleStocks);
-
-    res.json({
-      message: "Database seeded successfully",
-      count: sampleStocks.length,
-    });
-
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-/* --------------------------------------------------
-   GET ALL STOCKS
--------------------------------------------------- */
-router.get("/", async (req, res) => {
-  try {
-    const stocks = await Stock.find({});
-    res.json(stocks);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-/* --------------------------------------------------
-   GET BY ID — MUST BE LAST
--------------------------------------------------- */
-router.get("/:id", async (req, res) => {
-  try {
-    const stock = await Stock.findById(req.params.id);
-    if (!stock) return res.status(404).json({ error: "Not found" });
-    res.json(stock);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    await Stock.insertMany(seedStocks);
+    res.json({ message: 'Stocks seeded successfully', count: seedStocks.length });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
