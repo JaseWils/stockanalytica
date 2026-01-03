@@ -1,594 +1,510 @@
-# 📈 StockAnalytica
+# 📈 StockAnalytica - AI-Powered Stock Trading Platform
 
 <div align="center">
 
-![StockAnalytica Logo](screenshots/logo.png)
+![StockAnalytica Banner](https://img.shields.io/badge/StockAnalytica-AI%20Trading%20Platform-blueviolet?style=for-the-badge&logo=chartdotjs)
 
-**Professional Stock Market Analysis & Trading Platform**
+[![React](https://img.shields.io/badge/React-18. x-61DAFB?style=flat-square&logo=react)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=flat-square&logo=node.js)](https://nodejs.org/)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python)](https://python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=flat-square&logo=pytorch)](https://pytorch.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.x-47A248?style=flat-square&logo=mongodb)](https://mongodb.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow? style=flat-square)](LICENSE)
 
-<!-- Build Status -->
-![CI/CD](https://github.com/JaseWils/stockanalytica/actions/workflows/ci.yml/badge.svg)
-[![Build Status](https://img.shields.io/github/workflow/status/JaseWils/stockanalytica/CI)](https://github.com/JaseWils/stockanalytica/actions)
+**A full-stack stock trading simulation platform featuring LSTM neural network predictions, RSA-encrypted authentication, and real-time market analysis.**
 
-<!-- Repository Stats -->
-[![GitHub Stars](https://img.shields.io/github/stars/JaseWils/stockanalytica?style=social)](https://github.com/JaseWils/stockanalytica/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/JaseWils/stockanalytica?style=social)](https://github.com/JaseWils/stockanalytica/network/members)
-[![GitHub Issues](https://img.shields.io/github/issues/JaseWils/stockanalytica)](https://github.com/JaseWils/stockanalytica/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/JaseWils/stockanalytica)](https://github.com/JaseWils/stockanalytica/pulls)
-
-<!-- Code Quality -->
-[![Maintainability](https://img.shields.io/codeclimate/maintainability/JaseWils/stockanalytica)](https://codeclimate.com/github/JaseWils/stockanalytica)
-[![Code Coverage](https://img.shields.io/codecov/c/github/JaseWils/stockanalytica)](https://codecov.io/gh/JaseWils/stockanalytica)
-[![Dependencies](https://img.shields.io/librariesio/github/JaseWils/stockanalytica)](https://libraries.io/github/JaseWils/stockanalytica)
-
-<!-- License & Version -->
-[![GitHub License](https://img.shields.io/github/license/JaseWils/stockanalytica)](https://github.com/JaseWils/stockanalytica/blob/main/LICENSE)
-[![Version](https://img.shields.io/github/package-json/v/JaseWils/stockanalytica?filename=frontend%2Fpackage.json)](https://github.com/JaseWils/stockanalytica)
-[![Last Commit](https://img.shields.io/github/last-commit/JaseWils/stockanalytica)](https://github.com/JaseWils/stockanalytica/commits/main)
-
-<!-- Tech Stack -->
-[![React](https://img.shields.io/badge/React-18.x-61DAFB?style=flat&logo=react&logoColor=white)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-16.x+-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6.x-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![Express](https://img.shields.io/badge/Express-4.x-000000?style=flat&logo=express&logoColor=white)](https://expressjs.com/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind-3.x-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![JWT](https://img.shields.io/badge/JWT-Auth-000000?style=flat&logo=json-web-tokens&logoColor=white)](https://jwt.io/)
-
-<!-- Social & Links -->
-[![Website](https://img.shields.io/badge/Website-Live-brightgreen?style=flat&logo=vercel)](https://stockanalytica.vercel.app)
-[![Documentation](https://img.shields.io/badge/Docs-Read-blue?style=flat&logo=read-the-docs&logoColor=white)](https://github.com/JaseWils/stockanalytica/wiki)
-[![Discord](https://img.shields.io/discord/YOUR_DISCORD_ID?label=Discord&logo=discord&logoColor=white)](https://discord.gg/your-invite)
-
-[🚀 Live Demo](https://stockanalytica.vercel.app) • 
-[📖 Documentation](https://github.com/JaseWils/stockanalytica/wiki) • 
-[🐛 Report Bug](https://github.com/JaseWils/stockanalytica/issues) • 
-[✨ Request Feature](https://github.com/JaseWils/stockanalytica/issues)
+[Features](#-features) • [Demo](#-demo) • [Installation](#-installation) • [Architecture](#-architecture) • [API Reference](#-api-reference) • [Contributing](#-contributing)
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## 🌟 Features
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Screenshots](#-screenshots)
-- [Tech Stack](#-tech-stack)
-- [Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-- [Usage](#-usage)
-- [API Documentation](#-api-documentation)
-- [Project Structure](#-project-structure)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Contact](#-contact)
-- [Acknowledgments](#-acknowledgments)
+### 🔐 Security
+- **RSA-2048 Encryption** - All passwords are encrypted client-side using RSA public key cryptography before transmission
+- **JWT Authentication** - Secure session management with JSON Web Tokens
+- **Bcrypt Hashing** - Server-side password hashing for database storage
 
----
+### 🤖 AI-Powered Predictions
+- **LSTM Neural Network** - Deep learning model trained on 2 years of historical data
+- **90-Day Price Forecasting** - Predicts future stock prices with confidence intervals
+- **Buy/Sell Recommendations** - Automated trading signals based on predicted price changes
+  - 🟢 **STRONG BUY**:  Expected gain > 10%
+  - 🟢 **BUY**: Expected gain 5-10%
+  - 🟡 **HOLD**: Expected change -5% to 5%
+  - 🔴 **SELL**: Expected loss 5-10%
+  - 🔴 **STRONG SELL**: Expected loss > 10%
 
-## 🎯 Overview
+### 📊 Data Visualization
+- **Historical Price Charts** - 6-month price history with interactive graphs
+- **Prediction Visualization** - Future price predictions with confidence bands
+- **Trading Volume Analysis** - 60-day volume bar charts
+- **Returns Distribution** - Statistical analysis of daily returns
 
-**StockAnalytica** is a comprehensive full-stack web application designed to provide users with professional-grade stock market analysis and trading capabilities. Built with modern web technologies, it offers real-time portfolio management, sector-based stock filtering, and intelligent risk assessment tools.
+### 💼 Portfolio Management
+- **Virtual Trading** - Start with $50,000 virtual balance
+- **Real-time Portfolio Tracking** - Monitor holdings and P&L
+- **Transaction History** - Complete record of all trades
+- **4% Commission Model** - Realistic trading simulation
 
-### Why StockAnalytica?
-
-- 🎨 **Beautiful UI/UX** - Modern, responsive design with dark theme
-- 🔐 **Secure** - JWT authentication with bcrypt password hashing
-- 💼 **Portfolio Management** - Real-time tracking of investments and P&L
-- 📊 **Risk Analysis** - AI-powered risk assessment for informed decisions
-- 💰 **Commission Tracking** - Transparent 4% commission on all trades
-- 🚀 **Fast & Scalable** - Built with performance in mind
-
----
-
-## ✨ Features
-
-### Core Functionality
-
-- ✅ **User Authentication**
-  - Secure registration and login
-  - JWT-based session management
-  - Profile customization (Focused/Diversified strategies)
-
-- 📈 **Stock Market**
-  - Browse stocks across multiple sectors
-  - Real-time stock data display
-  - Advanced search and filtering
-  - Sector categorization (Technology, Automobile, Oil & Gas, Finance, Pharmaceuticals)
-
-- 💼 **Portfolio Management**
-  - Real-time portfolio valuation
-  - Profit/Loss tracking
-  - Average purchase price calculation
-  - Holdings overview
-
-- 💸 **Trading**
-  - Buy stocks with instant execution
-  - 4% commission structure
-  - Transaction validation
-  - Balance management
-
-- 📊 **Analytics**
-  - Risk indicators (High/Medium/Low)
-  - P/E ratios
-  - Market capitalization
-  - Trading volume
-  - Price change tracking
-
-- 📜 **Transaction History**
-  - Complete audit trail
-  - Buy/Sell records
-  - Commission breakdown
-  - Timestamped entries
+### 🎨 Modern UI/UX
+- **Dark Theme** - Eye-friendly dark mode interface
+- **Responsive Design** - Works on desktop and mobile
+- **Gradient Accents** - Beautiful blue-purple color scheme
+- **Smooth Animations** - Polished user experience
 
 ---
 
-## 📸 Screenshots
+## 📸 Demo
 
-### Authentication Screen
-<div align="center">
-  <img src="screenshots/login.png" alt="Login Screen" width="800"/>
-  <p><em>Beautiful gradient-based authentication interface with dark theme</em></p>
-</div>
+### Login Screen with RSA Encryption
+![Login Screen](docs/images/login.png)
 
 ### Market Overview
-<div align="center">
-  <img src="screenshots/market-overview.png" alt="Market Overview" width="800"/>
-  <p><em>Stock cards with sector filtering and risk indicators</em></p>
-</div>
+![Market Overview](docs/images/market. png)
+
+### AI Prediction Modal
+![AI Prediction](docs/images/prediction.png)
 
 ### Portfolio Dashboard
-<div align="center">
-  <img src="screenshots/portfolio.png" alt="Portfolio" width="800"/>
-  <p><em>Real-time P&L tracking with detailed holdings</em></p>
-</div>
-
-### Buy Stock Modal
-<div align="center">
-  <img src="screenshots/buy-modal.png" alt="Buy Modal" width="600"/>
-  <p><em>Transaction preview with commission breakdown</em></p>
-</div>
-
-### Transaction History
-<div align="center">
-  <img src="screenshots/transactions.png" alt="Transactions" width="800"/>
-  <p><em>Complete transaction history with filters</em></p>
-</div>
-
-> **Note:** Add your actual screenshots to a `screenshots/` folder in your repository
+![Portfolio](docs/images/portfolio.png)
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠 Tech Stack
 
-### Frontend
-| Technology | Purpose | Version |
-|------------|---------|---------|
-| ![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black) | UI Framework | 18.x |
-| ![TailwindCSS](https://img.shields.io/badge/Tailwind-38B2AC?style=flat&logo=tailwind-css&logoColor=white) | Styling | 3.x |
-| ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=flat&logo=axios&logoColor=white) | HTTP Client | 1.6.x |
-| ![Lucide](https://img.shields.io/badge/Lucide-000000?style=flat&logo=lucide&logoColor=white) | Icons | Latest |
-
-### Backend
-| Technology | Purpose | Version |
-|------------|---------|---------|
-| ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white) | Runtime | 16.x+ |
-| ![Express](https://img.shields.io/badge/Express-000000?style=flat&logo=express&logoColor=white) | Web Framework | 4.x |
-| ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white) | Database | 6.x |
-| ![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=flat&logo=mongoose&logoColor=white) | ODM | 8.x |
-| ![JWT](https://img.shields.io/badge/JWT-000000?style=flat&logo=json-web-tokens&logoColor=white) | Authentication | 9.x |
-| ![Bcrypt](https://img.shields.io/badge/Bcrypt-3178C6?style=flat) | Password Hashing | Latest |
-
-### DevOps & Tools
-| Tool | Purpose |
-|------|---------|
-| ![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white) | Version Control |
-| ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white) | Repository Hosting |
-| ![VS Code](https://img.shields.io/badge/VS_Code-007ACC?style=flat&logo=visual-studio-code&logoColor=white) | IDE |
-| ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat&logo=postman&logoColor=white) | API Testing |
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | React 18, Tailwind CSS, Lucide Icons |
+| **Backend** | Node.js, Express.js, MongoDB, Mongoose |
+| **AI/ML** | Python, PyTorch, LSTM, scikit-learn |
+| **Data** | Yahoo Finance API (yfinance) |
+| **Security** | RSA-2048, JWT, Bcrypt |
+| **Visualization** | Matplotlib, Chart.js |
 
 ---
 
-## 🚀 Getting Started
+## 📦 Installation
 
 ### Prerequisites
 
-Before you begin, ensure you have the following installed:
+- **Node.js** 18.x or higher
+- **Python** 3.10 or higher
+- **MongoDB** (local or MongoDB Atlas)
+- **Git**
 
-- **Node.js** (v16.x or higher) - [Download](https://nodejs.org/)
-- **MongoDB** (v6.x or higher) - [Download](https://www.mongodb.com/try/download/community) OR [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (recommended)
-- **npm** or **yarn** - Comes with Node.js
-- **Git** - [Download](https://git-scm.com/)
-
-### Installation
-
-#### 1. Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/JaseWils/stockanalytica.git
 cd stockanalytica
 ```
 
-#### 2. Install Backend Dependencies
+### 2. Backend Setup
 
 ```bash
+# Navigate to backend
 cd backend
+
+# Install dependencies
 npm install
+
+# Create environment file
+cp .env.example .env
+
+# Edit .env with your configuration
+notepad .env  # Windows
+# or:  nano .env  # Linux/Mac
 ```
 
-#### 3. Install Frontend Dependencies
-
-```bash
-cd ../frontend
-npm install
-```
-
-### Configuration
-
-#### Backend Environment Variables
-
-Create a `.env` file in the `backend/` directory:
-
+**Backend `.env` configuration:**
 ```env
-# Server Configuration
 PORT=5000
-NODE_ENV=development
-
-# Database
 MONGODB_URI=mongodb://localhost:27017/stockanalytica
-# OR for MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/stockanalytica
-
-# Authentication
-JWT_SECRET=your_super_secret_jwt_key_minimum_32_characters_long
-
-# Payment Gateway (Future)
-STRIPE_SECRET_KEY=sk_test_your_stripe_key
-
-# API Keys (Future)
-ALPHA_VANTAGE_API_KEY=your_api_key
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 ```
-
-#### Frontend Environment Variables
-
-Create a `.env` file in the `frontend/` directory:
-
-```env
-REACT_APP_API_URL=http://localhost:5000/api
-REACT_APP_STRIPE_PUBLIC_KEY=pk_test_your_stripe_public_key
-```
-
-#### Database Setup
-
-##### Option A: Local MongoDB
 
 ```bash
-# Start MongoDB service
-# Windows:
-net start MongoDB
-
-# macOS:
-brew services start mongodb-community
-
-# Linux:
-sudo systemctl start mongod
-```
-
-##### Option B: MongoDB Atlas (Recommended)
-
-1. Create account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Create a free cluster
-3. Get connection string
-4. Update `MONGODB_URI` in `backend/.env`
-
----
-
-## 💻 Usage
-
-### Starting the Application
-
-#### 1. Start Backend Server
-
-```bash
-cd backend
+# Start the backend server
 npm run dev
 ```
 
-Server will start at `http://localhost:5000`
-
-#### 2. Seed Database (First Time Only)
+### 3. Frontend Setup
 
 ```bash
-# In a new terminal or browser
-curl -X POST http://localhost:5000/api/stocks/seed
+# Open new terminal, navigate to frontend
+cd frontend
+
+# Install dependencies
+npm install
+
+# Create environment file
+cp . env.example .env
 ```
 
-Or visit: `http://localhost:5000/api/stocks/seed`
-
-#### 3. Start Frontend
+**Frontend `.env` configuration:**
+```env
+DISABLE_ESLINT_PLUGIN=true
+REACT_APP_API_URL=http://localhost:5000/api
+REACT_APP_PREDICTION_API_URL=http://localhost:5001/api
+```
 
 ```bash
-cd frontend
+# Start the frontend
 npm start
 ```
 
-Frontend will open at `http://localhost:3000`
+### 4. AI Prediction Service Setup
 
-### Using the Application
+```bash
+# Open new terminal, navigate to prediction service
+cd prediction-service
 
-1. **Register** - Create a new account
-2. **Browse Stocks** - Explore available stocks by sector
-3. **Buy Stocks** - Click on a stock and purchase shares
-4. **Track Portfolio** - Monitor your investments in real-time
-5. **View History** - Check all transactions
+# Create virtual environment (recommended)
+python -m venv venv
+
+# Activate virtual environment
+# Windows: 
+venv\Scripts\activate
+# Linux/Mac:
+source venv/bin/activate
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Start the prediction service
+python app.py
+```
+
+### 5. Seed the Database
+
+Open your browser and visit: 
+```
+http://localhost:5000/api/stocks/seed
+```
+
+### 6. Access the Application
+
+Open your browser and visit: 
+```
+http://localhost:3000
+```
 
 ---
 
-## 📚 API Documentation
+## 🏗 Architecture
 
-### Authentication Endpoints
+```
+stockanalytica/
+├── 📂 backend/                 # Node.js Express API
+│   ├── 📂 keys/               # RSA key pair (auto-generated)
+│   ├── 📂 middleware/         # Auth middleware
+│   ├── 📂 models/             # Mongoose schemas
+│   │   ├── User.js
+│   │   ├── Stock.js
+│   │   ├── Portfolio.js
+│   │   └── Transaction.js
+│   ├── 📂 routes/             # API routes
+│   │   ├── auth.js            # Authentication (RSA + JWT)
+│   │   ├── stocks.js          # Stock data
+│   │   ├── portfolio.js       # Portfolio management
+│   │   └── payment.js         # Buy/Sell operations
+│   ├── 📂 utils/
+│   │   └── rsaUtils.js        # RSA encryption utilities
+│   ├── server.js              # Express server entry
+│   └── package.json
+│
+├── 📂 frontend/                # React Application
+│   ├── 📂 src/
+│   │   ├── 📂 context/
+│   │   │   └── AuthContext.jsx    # Auth state management
+│   │   ├── 📂 services/
+│   │   │   └── api.js             # API client
+│   │   ├── 📂 utils/
+│   │   │   └── rsaEncrypt.js      # Client-side RSA encryption
+│   │   └── App.jsx                # Main application
+│   └── package.json
+│
+├── 📂 prediction-service/      # Python ML Service
+│   ├── app.py                 # Flask API server
+│   ├── requirements.txt       # Python dependencies
+│   └── test. html              # Standalone test page
+│
+├── docker-compose.yml         # Docker configuration
+└── README.md                  # This file
+```
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/auth/register` | Register new user | ❌ |
-| POST | `/api/auth/login` | Login user | ❌ |
-| GET | `/api/auth/me` | Get current user | ✅ |
+---
 
-### Stock Endpoints
+## 🔌 API Reference
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/stocks` | Get all stocks | ❌ |
-| GET | `/api/stocks/:id` | Get single stock | ❌ |
-| POST | `/api/stocks/seed` | Seed database | ❌ |
+### Authentication
 
-### Portfolio Endpoints
+#### Get RSA Public Key
+```http
+GET /api/auth/public-key
+```
+**Response:**
+```json
+{
+  "publicKey": "-----BEGIN PUBLIC KEY-----\n..."
+}
+```
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/portfolio` | Get user portfolio | ✅ |
-| GET | `/api/portfolio/transactions` | Get transaction history | ✅ |
-
-### Payment Endpoints
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/payment/buy` | Buy stock | ✅ |
-| POST | `/api/payment/sell` | Sell stock | ✅ |
-
-### Example API Request
-
-```javascript
-// Login
-POST /api/auth/login
+#### Register User
+```http
+POST /api/auth/register
 Content-Type: application/json
 
 {
   "email": "user@example.com",
-  "password": "password123"
+  "encryptedPassword": "RSA_ENCRYPTED_STRING",
+  "name": "John Doe",
+  "profileType": "diversified"
 }
+```
 
-// Response
+#### Login
+```http
+POST /api/auth/login
+Content-Type:  application/json
+
 {
-  "user": {
-    "id": "123abc",
-    "email": "user@example.com",
-    "name": "John Doe",
-    "profileType": "diversified",
-    "balance": 50000
+  "email":  "user@example. com",
+  "encryptedPassword":  "RSA_ENCRYPTED_STRING"
+}
+```
+
+### Stocks
+
+#### Get All Stocks
+```http
+GET /api/stocks? sector=Technology&search=apple
+```
+
+#### Seed Database
+```http
+GET /api/stocks/seed
+```
+
+### AI Predictions
+
+#### Get Stock Prediction
+```http
+GET http://localhost:5001/api/predict/{SYMBOL}? days=90
+```
+**Response:**
+```json
+{
+  "success": true,
+  "symbol": "AAPL",
+  "prediction": {
+    "current_price": 178.50,
+    "predicted_price": 195.23,
+    "price_change": 16.73,
+    "price_change_percent":  9.37,
+    "recommendation": "BUY",
+    "recommendation_color": "#00ff88"
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "chart":  "BASE64_ENCODED_PNG",
+  "model_metrics": {
+    "mse": 12.45,
+    "r2_score": 0.87
+  },
+  "stock_info": {
+    "sector": "Technology",
+    "market_cap": 2800000000000,
+    "pe_ratio": 28.5
+  }
+}
+```
+
+### Portfolio
+
+#### Get User Portfolio
+```http
+GET /api/portfolio
+Authorization: Bearer {JWT_TOKEN}
+```
+
+#### Buy Stock
+```http
+POST /api/payment/buy
+Authorization:  Bearer {JWT_TOKEN}
+Content-Type: application/json
+
+{
+  "stockId": "MONGODB_OBJECT_ID",
+  "quantity": 10
 }
 ```
 
 ---
 
-## 📁 Project Structure
+## 🔐 Security Implementation
+
+### RSA Encryption Flow
 
 ```
-stockanalytica/
-│
-├── frontend/                    # React Frontend
-│   ├── public/                 # Static files
-│   │   └── index.html
-│   ├── src/
-│   │   ├── context/           # React Context
-│   │   │   └── AuthContext.jsx
-│   │   ├── services/          # API Services
-│   │   │   └── api.js
-│   │   ├── App.jsx            # Main component
-│   │   ├── index.js           # Entry point
-│   │   └── index.css          # Global styles
-│   ├── .env                   # Environment variables
-│   ├── tailwind.config.js     # Tailwind configuration
-│   └── package.json
-│
-├── backend/                     # Node.js Backend
-│   ├── config/                 # Configuration files
-│   │   └── db.js              # Database connection
-│   ├── models/                 # Mongoose models
-│   │   ├── User.js
-│   │   ├── Stock.js
-│   │   └── Transaction.js
-│   ├── routes/                 # API routes
-│   │   ├── auth.js
-│   │   ├── stocks.js
-│   │   ├── portfolio.js
-│   │   └── payment.js
-│   ├── middleware/             # Custom middleware
-│   │   └── auth.js
-│   ├── .env                    # Environment variables
-│   ├── server.js               # Server entry point
-│   └── package.json
-│
-├── screenshots/                 # Application screenshots
-├── .gitignore                  # Git ignore rules
-├── LICENSE                     # MIT License
-└── README.md                   # Project documentation
+┌─────────────┐     1. Request Public Key      ┌─────────────┐
+│   Frontend  │ ───────────────────────────────▶│   Backend   │
+│   (React)   │ ◀─────────────────────────────── │  (Node.js)  │
+└─────────────┘     2. Send RSA Public Key      └─────────────┘
+       │                                               │
+       │  3. Encrypt password                          │
+       │     with public key                           │
+       ▼                                               ▼
+┌─────────────┐     4. Send encrypted password  ┌─────────────┐
+│  JSEncrypt  │ ───────────────────────────────▶│   Crypto    │
+│   Library   │                                 │   Module    │
+└─────────────┘                                 └─────────────┘
+                                                       │
+                                                       │  5. Decrypt with
+                                                       │     private key
+                                                       ▼
+                                                ┌─────────────┐
+                                                │   Bcrypt    │
+                                                │   Hashing   │
+                                                └─────────────┘
+```
+
+### LSTM Model Architecture
+
+```
+Input (60 days of prices)
+         │
+         ▼
+┌─────────────────┐
+│ LSTM Layer 1    │  (128 units, return_sequences=True)
+│ + Dropout(0.2)  │
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│ LSTM Layer 2    │  (64 units, return_sequences=True)
+│ + Dropout(0.2)  │
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│ LSTM Layer 3    │  (32 units)
+│ + Dropout(0.2)  │
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Dense Layer     │  (1 unit - predicted price)
+└─────────────────┘
 ```
 
 ---
 
-## 🗺️ Roadmap
+## 🚀 Deployment
 
-### Version 1.0 (Current) ✅
-- [x] User authentication (Register/Login)
-- [x] Stock browsing with filters
-- [x] Buy stock functionality
-- [x] Portfolio management
-- [x] Transaction history
-- [x] Commission calculations (4%)
+### Using Docker
 
-### Version 1.5 (Next Release) 🔄
-- [ ] Sell stock functionality
-- [ ] Real-time stock price updates
-- [ ] Stock price charts
-- [ ] Watchlist feature
-- [ ] Email notifications
-- [ ] Password reset functionality
+```bash
+# Build and run all services
+docker-compose up --build
 
-### Version 2.0 (Future) 📅
-- [ ] Real-time market data API integration (Alpha Vantage/Yahoo Finance)
-- [ ] Advanced technical indicators
-- [ ] News feed integration
-- [ ] Price alerts
-- [ ] Social features (follow other traders)
-- [ ] Mobile app (React Native)
+# Run in detached mode
+docker-compose up -d
+```
 
-### Version 3.0 (Long-term) 🌟
-- [ ] Stripe payment integration
-- [ ] Admin dashboard
-- [ ] Multiple currency support
-- [ ] AI-powered stock recommendations
-- [ ] Paper trading mode
-- [ ] Educational resources
+### Manual Deployment
 
-See the [open issues](https://github.com/JaseWils/stockanalytica/issues) for a full list of proposed features and known issues.
+#### Backend (Heroku/Railway)
+```bash
+cd backend
+heroku create stockanalytica-api
+heroku config:set MONGODB_URI=your_mongodb_atlas_uri
+heroku config: set JWT_SECRET=your_production_secret
+git push heroku main
+```
+
+#### Frontend (Vercel/Netlify)
+```bash
+cd frontend
+npm run build
+# Deploy build folder to your hosting platform
+```
+
+#### Prediction Service (Railway/DigitalOcean)
+```bash
+cd prediction-service
+# Deploy as a Python web service
+# Ensure PORT environment variable is set
+```
+
+---
+
+## 🧪 Testing
+
+### Backend Tests
+```bash
+cd backend
+npm test
+```
+
+### Frontend Tests
+```bash
+cd frontend
+npm test
+```
+
+### Test Prediction API
+```bash
+curl http://localhost:5001/api/predict/AAPL? days=90
+```
+
+---
+
+## 📈 Performance Optimization
+
+- **Caching**:  Redis caching for frequently accessed stock data
+- **Database Indexing**: MongoDB indexes on symbol and sector fields
+- **Lazy Loading**: React code splitting for faster initial load
+- **Model Caching**:  LSTM predictions cached for 1 hour per stock
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-### How to Contribute
-
-1. **Fork the Project**
-2. **Create your Feature Branch**
-   ```bash
-   git checkout -b feature/AmazingFeature
-   ```
-3. **Commit your Changes**
-   ```bash
-   git commit -m 'Add some AmazingFeature'
-   ```
-4. **Push to the Branch**
-   ```bash
-   git push origin feature/AmazingFeature
-   ```
-5. **Open a Pull Request**
-
-### Contribution Guidelines
-
-- Follow the existing code style
-- Write clear commit messages
-- Add tests for new features
-- Update documentation as needed
-- Be respectful and constructive
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
 ## 📄 License
 
-Distributed under the MIT License. See `LICENSE` file for more information.
-
-```
-MIT License
-
-Copyright (c) 2025 Bisha Mitra
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
 
 ---
 
-## 📞 Contact
+## 👨‍💻 Author
 
 **Bishak Mitra**
-
-[![GitHub](https://img.shields.io/badge/GitHub-JaseWils-181717?style=flat&logo=github)](https://github.com/JaseWils)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat&logo=linkedin)](https://www.linkedin.com/in/bishakmitra/)
-[![Email](https://img.shields.io/badge/Email-bishakmitra@gmail.com-D14836?style=flat&logo=gmail&logoColor=white)](mailto:bishakmitra@gmail.com)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-4285F4?style=flat&logo=google-chrome&logoColor=white)](https://bishakmitra.vercel.app/)
-
-**Project Link:** [https://github.com/JaseWils/stockanalytica](https://github.com/JaseWils/stockanalytica)
-
-**Live Demo:** [https://stockanalytica.demo.com](https://stockanalytica.demo.com) *(Coming Soon)*
+- GitHub: [@JaseWils](https://github.com/JaseWils)
 
 ---
 
 ## 🙏 Acknowledgments
 
-Special thanks to:
-
-- [React.js](https://reactjs.org/) - For the amazing UI library
-- [Node.js](https://nodejs.org/) - For the powerful runtime
-- [MongoDB](https://www.mongodb.com/) - For the flexible database
-- [Tailwind CSS](https://tailwindcss.com/) - For the utility-first CSS framework
-- [Lucide Icons](https://lucide.dev/) - For beautiful icons
-- [JWT.io](https://jwt.io/) - For secure authentication
-- [Express.js](https://expressjs.com/) - For the minimal web framework
-- [Mongoose](https://mongoosejs.com/) - For elegant MongoDB object modeling
-
-### Inspiration & Resources
-
-- [Best Practices for REST API Design](https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/)
-- [React Context API Documentation](https://react.dev/reference/react/useContext)
-- [MongoDB Atlas Tutorial](https://www.mongodb.com/docs/atlas/)
-- [JWT Authentication Guide](https://jwt.io/introduction)
-
----
-
-## 📊 Project Stats
-
-![GitHub repo size](https://img.shields.io/github/repo-size/JaseWils/stockanalytica)
-![GitHub code size](https://img.shields.io/github/languages/code-size/JaseWils/stockanalytica)
-![GitHub last commit](https://img.shields.io/github/last-commit/JaseWils/stockanalytica)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/JaseWils/stockanalytica)
-
----
-
-## ⭐ Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=JaseWils/stockanalytica&type=Date)](https://star-history.com/#JaseWils/stockanalytica&Date)
+- [Yahoo Finance](https://finance.yahoo.com/) for stock data
+- [PyTorch](https://pytorch.org/) for deep learning framework
+- [Tailwind CSS](https://tailwindcss. com/) for styling
+- [Lucide Icons](https://lucide.dev/) for beautiful icons
 
 ---
 
 <div align="center">
 
-### Show your support by giving a ⭐ if you like this project!
+**⭐ Star this repository if you found it helpful! ⭐**
 
-Made with ❤️ by [Bisha Mitra](https://github.com/JaseWils)
-
-**[⬆ Back to Top](#-stockanalytica)**
+Made with ❤️ and lots of ☕
 
 </div>
