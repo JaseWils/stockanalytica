@@ -1,0 +1,43 @@
+version: '3.8'
+
+services: 
+  mongodb: 
+    image:mongo: 6
+    container_name:  stockanalytica-mongodb
+    ports: 
+      - "27017:27017"
+    volumes: 
+      - mongodb_data:/data/db
+
+  backend:
+    build:  ./backend
+    container_name: stockanalytica-backend
+    ports:
+      - "5000:5000"
+    environment: 
+      - MONGODB_URI=mongodb://mongodb:27017/stockanalytica
+      - JWT_SECRET=your_super_secret_jwt_key_minimum_32_characters_long
+      - PORT=5000
+    depends_on:
+      - mongodb
+
+  prediction-service:
+    build: ./prediction-service
+    container_name: stockanalytica-prediction
+    ports:
+      - "5001:5001"
+
+  frontend:
+    build: ./frontend
+    container_name:  stockanalytica-frontend
+    ports: 
+      - "3000:3000"
+    environment: 
+      - REACT_APP_API_URL=http://localhost:5000/api
+      - REACT_APP_PREDICTION_API_URL=http://localhost:5001/api
+    depends_on:
+      - backend
+      - prediction-service
+
+volumes:
+  mongodb_data:

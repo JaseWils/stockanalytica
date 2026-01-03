@@ -3,15 +3,39 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
+const { getPublicKey, decryptPassword } = require('../utils/rsaUtils');
 
-// Register
+// Get RSA Public Key for client-side encryption
+router.get('/public-key', (req, res) => {
+  try {
+    const publicKey = getPublicKey();
+    res.json({ publicKey });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to get public key' });
+  }
+});
+
+// Register with RSA encrypted password
 router.post('/register', async (req, res) => {
   try {
-    const { email, password, name, profileType } = req.body;
+    const { email, encryptedPassword, name, profileType } = req.body;
+
+    // Decrypt the RSA encrypted password
+    let password;
+    try {
+      password = decryptPassword(encryptedPassword);
+    } catch (decryptError) {
+      return res.status(400).json({ error: 'Invalid encrypted password' });
+    }
+
+    // Validate password strength
+    if (password.length < 8) {
+      return res.status(400).json({ error: 'Password must be at least 8 characters' });
+    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: 'Email already registered' });
+      return res. status(400).json({ error: 'Email already registered' });
     }
 
     const user = new User({ email, password, name, profileType });
@@ -22,11 +46,11 @@ router.post('/register', async (req, res) => {
     });
 
     res.status(201).json({
-      user: {
-        id: user._id,
-        email: user.email,
+      user:  {
+        id:  user._id,
+        email: user. email,
         name: user.name,
-        profileType: user.profileType,
+        profileType:  user.profileType,
         balance: user.balance
       },
       token
@@ -36,10 +60,18 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login
+// Login with RSA encrypted password
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, encryptedPassword } = req.body;
+
+    // Decrypt the RSA encrypted password
+    let password;
+    try {
+      password = decryptPassword(encryptedPassword);
+    } catch (decryptError) {
+      return res. status(400).json({ error: 'Invalid encrypted password' });
+    }
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -51,7 +83,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, process.env. JWT_SECRET, {
       expiresIn: '7d'
     });
 
@@ -59,9 +91,9 @@ router.post('/login', async (req, res) => {
       user: {
         id: user._id,
         email: user.email,
-        name: user.name,
+        name:  user.name,
         profileType: user.profileType,
-        balance: user.balance
+        balance: user. balance
       },
       token
     });
@@ -76,10 +108,10 @@ router.get('/me', auth, async (req, res) => {
     res.json({
       user: {
         id: req.user._id,
-        email: req.user.email,
-        name: req.user.name,
+        email: req.user. email,
+        name: req.user. name,
         profileType: req.user.profileType,
-        balance: req.user.balance
+        balance: req. user.balance
       }
     });
   } catch (error) {

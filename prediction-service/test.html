@@ -1,0 +1,222 @@
+<! DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Prediction Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a2e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #00d4ff;
+        }
+        .stock-input {
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: none;
+            margin: 10px;
+        }
+        .predict-btn {
+            padding: 10px 30px;
+            font-size: 18px;
+            background:  linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .predict-btn:hover {
+            opacity: 0.9;
+        }
+        .predict-btn:disabled {
+            opacity: 0.5;
+            cursor:  not-allowed;
+        }
+        .loading {
+            font-size: 20px;
+            color: #ffd700;
+            margin: 20px;
+        }
+        .chart-container {
+            margin-top: 20px;
+        }
+        .chart-container img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin:  20px 0;
+        }
+        .stat-card {
+            background:  #2d2d44;
+            padding:  15px;
+            border-radius:  10px;
+        }
+        .stat-card h3 {
+            margin: 0;
+            color: #888;
+            font-size: 14px;
+        }
+        .stat-card p {
+            margin: 10px 0 0 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .positive { color: #00ff88; }
+        .negative { color: #ff4444; }
+        .error {
+            color: #ff4444;
+            font-size: 18px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📈 StockAnalytica - AI Prediction</h1>
+        <p>Enter a stock symbol to get AI-powered price prediction</p>
+        
+        <div>
+            <input type="text" id="stockSymbol" class="stock-input" placeholder="Enter stock symbol (e.g., AAPL)" value="AAPL">
+            <button class="predict-btn" id="predictBtn" onclick="getPrediction()">🔮 Get Prediction</button>
+        </div>
+        
+        <div id="loading" class="loading" style="display: none;">
+            ⏳ Analyzing stock data with LSTM model...  This may take 10-30 seconds...
+        </div>
+        
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <div id="results" style="display: none;">
+            <h2 id="stockName"></h2>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>Current Price</h3>
+                    <p id="currentPrice"></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Predicted Price (90 days)</h3>
+                    <p id="predictedPrice"></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Expected Change</h3>
+                    <p id="priceChange"></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Recommendation</h3>
+                    <p id="recommendation"></p>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <img id="chart" alt="Prediction Chart">
+            </div>
+            
+            <div class="stats" style="margin-top: 20px;">
+                <div class="stat-card">
+                    <h3>Sector</h3>
+                    <p id="sector"></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Market Cap</h3>
+                    <p id="marketCap"></p>
+                </div>
+                <div class="stat-card">
+                    <h3>P/E Ratio</h3>
+                    <p id="peRatio"></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Model R² Score</h3>
+                    <p id="r2Score"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function getPrediction() {
+            const symbol = document.getElementById('stockSymbol').value. toUpperCase();
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const error = document.getElementById('error');
+            const btn = document.getElementById('predictBtn');
+            
+            // Reset
+            loading.style.display = 'block';
+            results.style.display = 'none';
+            error.style. display = 'none';
+            btn. disabled = true;
+            btn.textContent = '⏳ Loading...';
+            
+            try {
+                const response = await fetch(`http://localhost:5001/api/predict/${symbol}? days=90`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update stats
+                    document. getElementById('stockName').textContent = 
+                        `${data.stock_info.name} (${data. stock_info.real_ticker})`;
+                    document.getElementById('currentPrice').textContent = 
+                        `$${data.prediction.current_price}`;
+                    document.getElementById('predictedPrice').textContent = 
+                        `$${data.prediction.predicted_price}`;
+                    
+                    const changeEl = document.getElementById('priceChange');
+                    const changePercent = data.prediction.price_change_percent;
+                    changeEl.textContent = `${changePercent >= 0 ? '+' : ''}${changePercent.toFixed(2)}%`;
+                    changeEl.className = changePercent >= 0 ? 'positive' : 'negative';
+                    
+                    const recEl = document.getElementById('recommendation');
+                    recEl.textContent = data.prediction.recommendation;
+                    recEl.style.color = data. prediction.recommendation_color;
+                    
+                    document.getElementById('sector').textContent = data. stock_info.sector;
+                    document.getElementById('marketCap').textContent = 
+                        `$${(data.stock_info.market_cap / 1e9).toFixed(2)}B`;
+                    document.getElementById('peRatio').textContent = 
+                        data.stock_info. pe_ratio ?  data.stock_info. pe_ratio. toFixed(2) : 'N/A';
+                    document.getElementById('r2Score').textContent = 
+                        data.model_metrics.r2_score.toFixed(4);
+                    
+                    // Set chart image
+                    document.getElementById('chart').src = `data:image/png;base64,${data.chart}`;
+                    
+                    results.style.display = 'block';
+                } else {
+                    error.textContent = `Error: ${data.error}`;
+                    error.style.display = 'block';
+                }
+            } catch (err) {
+                error.textContent = `Failed to connect to prediction service: ${err. message}`;
+                error.style.display = 'block';
+            } finally {
+                loading.style.display = 'none';
+                btn.disabled = false;
+                btn. textContent = '🔮 Get Prediction';
+            }
+        }
+        
+        // Allow Enter key to trigger prediction
+        document. getElementById('stockSymbol').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                getPrediction();
+            }
+        });
+    </script>
+</body>
+</html>
