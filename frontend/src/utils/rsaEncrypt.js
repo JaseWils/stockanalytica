@@ -3,18 +3,33 @@ import JSEncrypt from 'jsencrypt';
 let publicKey = null;
 let encryptor = null;
 
+// Hardcode the API URL to avoid . env issues
+const API_URL = 'http://localhost:5000/api';
+
 // Fetch public key from server
-export const fetchPublicKey = async (apiUrl) => {
+export const fetchPublicKey = async () => {
   try {
-    const response = await fetch(`${apiUrl}/auth/public-key`);
+    console.log('Fetching RSA public key from:', `${API_URL}/auth/public-key`);
+    const response = await fetch(`${API_URL}/auth/public-key`);
+    
+    if (!response. ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const data = await response.json();
-    publicKey = data.publicKey;
     
-    // Initialize encryptor
-    encryptor = new JSEncrypt();
-    encryptor.setPublicKey(publicKey);
-    
-    return publicKey;
+    if (data.publicKey) {
+      publicKey = data. publicKey;
+      
+      // Initialize encryptor
+      encryptor = new JSEncrypt();
+      encryptor.setPublicKey(publicKey);
+      
+      console.log('RSA public key loaded successfully');
+      return publicKey;
+    } else {
+      throw new Error('No public key in response');
+    }
   } catch (error) {
     console.error('Failed to fetch public key:', error);
     throw error;
@@ -27,15 +42,16 @@ export const encryptPassword = (password) => {
     throw new Error('Encryptor not initialized.  Call fetchPublicKey first.');
   }
   
-  const encrypted = encryptor.encrypt(password);
+  const encrypted = encryptor. encrypt(password);
   if (!encrypted) {
     throw new Error('Encryption failed');
   }
   
+  console.log('Password encrypted successfully');
   return encrypted;
 };
 
 // Check if public key is loaded
 export const isPublicKeyLoaded = () => {
-  return publicKey !== null;
+  return publicKey !== null && encryptor !== null;
 };

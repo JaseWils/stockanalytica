@@ -3,7 +3,8 @@ import { fetchPublicKey, encryptPassword, isPublicKeyLoaded } from '../utils/rsa
 
 const AuthContext = createContext(null);
 
-const API_URL = process.env. REACT_APP_API_URL || 'http://localhost:5000/api';
+// Hardcode API URL to avoid .env issues
+const API_URL = 'http://localhost:5000/api';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -15,8 +16,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initRSA = async () => {
       try {
-        await fetchPublicKey(API_URL);
+        console.log('Initializing RSA.. .');
+        await fetchPublicKey();
         setRsaReady(true);
+        console.log('RSA initialized successfully');
       } catch (error) {
         console.error('Failed to initialize RSA:', error);
       }
@@ -30,12 +33,12 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           const response = await fetch(`${API_URL}/auth/me`, {
-            headers:  {
+            headers: {
               'Authorization': `Bearer ${token}`
             }
           });
           if (response.ok) {
-            const data = await response.json();
+            const data = await response. json();
             setUser(data.user);
           } else {
             localStorage.removeItem('token');
@@ -51,11 +54,14 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (email, password) => {
+    // Ensure RSA is ready
     if (!isPublicKeyLoaded()) {
-      await fetchPublicKey(API_URL);
+      console.log('RSA not ready, fetching public key...');
+      await fetchPublicKey();
     }
 
-    // Encrypt password with RSA before sending
+    // Encrypt password with RSA
+    console.log('Encrypting password with RSA...');
     const encryptedPassword = encryptPassword(password);
 
     const response = await fetch(`${API_URL}/auth/login`, {
@@ -79,28 +85,31 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (email, password, name, profileType) => {
+    // Ensure RSA is ready
     if (!isPublicKeyLoaded()) {
-      await fetchPublicKey(API_URL);
+      console.log('RSA not ready, fetching public key.. .');
+      await fetchPublicKey();
     }
 
-    // Encrypt password with RSA before sending
+    // Encrypt password with RSA
+    console. log('Encrypting password with RSA.. .');
     const encryptedPassword = encryptPassword(password);
 
     const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
-      headers: {
-        'Content-Type':  'application/json'
+      headers:  {
+        'Content-Type': 'application/json'
       },
-      body: JSON. stringify({ email, encryptedPassword, name, profileType })
+      body: JSON.stringify({ email, encryptedPassword, name, profileType })
     });
 
-    const data = await response. json();
+    const data = await response.json();
 
     if (!response.ok) {
       throw new Error(data.error || 'Registration failed');
     }
 
-    localStorage.setItem('token', data. token);
+    localStorage.setItem('token', data.token);
     setToken(data.token);
     setUser(data.user);
     return data;
