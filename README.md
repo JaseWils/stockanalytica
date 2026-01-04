@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![React](https://img.shields.io/badge/React-18.x-61DAFB? style=flat-square&logo=react)
+![React](https://img.shields.io/badge/React-18.x-61DAFB?style=flat-square&logo=react)
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=flat-square&logo=nodedotjs)
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=flat-square&logo=pytorch)
