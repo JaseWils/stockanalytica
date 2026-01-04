@@ -2,14 +2,14 @@
 
 <div align="center">
 
-![StockAnalytica Banner](https://img.shields.io/badge/StockAnalytica-AI%20Trading%20Platform-blueviolet?style=for-the-badge&logo=chartdotjs)
+![StockAnalytica Banner](https://img.shields.io/badge/StockAnalytica-AI%20Trading%20Platform-blueviolet? style=for-the-badge&logo=chartdotjs)
 
 [![React](https://img.shields.io/badge/React-18. x-61DAFB?style=flat-square&logo=react)](https://reactjs.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=flat-square&logo=node.js)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/Node. js-18.x-339933?style=flat-square&logo=nodedotjs)](https://nodejs.org/)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python)](https://python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=flat-square&logo=pytorch)](https://pytorch.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.x-47A248?style=flat-square&logo=mongodb)](https://mongodb.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow? style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
 **A full-stack stock trading simulation platform featuring LSTM neural network predictions, RSA-encrypted authentication, and real-time market analysis.**
 
