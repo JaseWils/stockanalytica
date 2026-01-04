@@ -2,21 +2,18 @@
 
 <div align="center">
 
-![StockAnalytica](https://img.shields.io/badge/StockAnalytica-AI%20Trading%20Platform-blueviolet? style=for-the-badge)
-
 ![React](https://img.shields.io/badge/React-18.x-61DAFB? style=flat-square&logo=react)
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=flat-square&logo=nodedotjs)
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=flat-square&logo=pytorch)
 ![MongoDB](https://img.shields.io/badge/MongoDB-6.x-47A248?style=flat-square&logo=mongodb)
-![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 **A full-stack stock trading simulation platform featuring LSTM neural network predictions, RSA-encrypted authentication, and real-time market analysis.**
 
 [Features](#-features) • [Demo](#-demo) • [Installation](#-installation) • [Architecture](#-architecture) • [API Reference](#-api-reference) • [Contributing](#-contributing)
 
 </div>
-
 ---
 
 ---
