@@ -6,11 +6,15 @@ const keysDir = path.join(__dirname, '../keys');
 
 // Ensure keys directory exists
 if (! fs.existsSync(keysDir)) {
-  fs.mkdirSync(keysDir, { recursive: true });
+  fs. mkdirSync(keysDir, { recursive: true });
 }
 
-const privateKeyPath = path.join(keysDir, 'private. pem');
+const privateKeyPath = path.join(keysDir, 'private.pem');
 const publicKeyPath = path. join(keysDir, 'public. pem');
+
+// Store keys in memory once loaded to prevent file system issues
+let cachedPrivateKey = null;
+let cachedPublicKey = null;
 
 // Generate RSA key pair if not exists
 const generateKeyPair = () => {
@@ -31,20 +35,40 @@ const generateKeyPair = () => {
     fs.writeFileSync(privateKeyPath, privateKey);
     fs.writeFileSync(publicKeyPath, publicKey);
     
+    // Cache the keys
+    cachedPrivateKey = privateKey;
+    cachedPublicKey = publicKey;
+    
     console.log('RSA key pair generated successfully! ');
+  } else {
+    // Load existing keys into cache
+    if (! cachedPrivateKey) {
+      cachedPrivateKey = fs.readFileSync(privateKeyPath, 'utf8');
+    }
+    if (!cachedPublicKey) {
+      cachedPublicKey = fs.readFileSync(publicKeyPath, 'utf8');
+    }
+    console.log('RSA keys loaded from disk.');
   }
 };
 
+// Initialize keys on module load
+generateKeyPair();
+
 // Get public key
 const getPublicKey = () => {
-  generateKeyPair();
-  return fs.readFileSync(publicKeyPath, 'utf8');
+  if (!cachedPublicKey) {
+    generateKeyPair();
+  }
+  return cachedPublicKey;
 };
 
 // Get private key
 const getPrivateKey = () => {
-  generateKeyPair();
-  return fs.readFileSync(privateKeyPath, 'utf8');
+  if (!cachedPrivateKey) {
+    generateKeyPair();
+  }
+  return cachedPrivateKey;
 };
 
 // Decrypt password using RSA private key
@@ -52,6 +76,11 @@ const getPrivateKey = () => {
 const decryptPassword = (encryptedPassword) => {
   try {
     const privateKey = getPrivateKey();
+    
+    if (!encryptedPassword) {
+      throw new Error('No encrypted password provided');
+    }
+    
     const buffer = Buffer.from(encryptedPassword, 'base64');
     
     // Use PKCS1 padding (this is what JSEncrypt uses)

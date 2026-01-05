@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { fetchPublicKey, encryptPassword, isPublicKeyLoaded } from '../utils/rsaEncrypt';
+import { fetchPublicKey, encryptPassword, isPublicKeyLoaded, refreshPublicKey } from '../utils/rsaEncrypt';
 
 const AuthContext = createContext(null);
 
-// Hardcode API URL to avoid .env issues
+// Hardcode API URL to avoid . env issues
 const API_URL = 'http://localhost:5000/api';
 
 export const AuthProvider = ({ children }) => {
@@ -16,12 +16,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initRSA = async () => {
       try {
-        console.log('Initializing RSA.. .');
+        console.log('Initializing RSA...');
         await fetchPublicKey();
         setRsaReady(true);
         console.log('RSA initialized successfully');
       } catch (error) {
         console.error('Failed to initialize RSA:', error);
+        setRsaReady(false);
       }
     };
     initRSA();
@@ -33,19 +34,22 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           const response = await fetch(`${API_URL}/auth/me`, {
-            headers: {
-              'Authorization': `Bearer ${token}`
+            headers:  {
+              'Authorization':  `Bearer ${token}`
             }
           });
           if (response.ok) {
-            const data = await response. json();
+            const data = await response.json();
             setUser(data.user);
           } else {
-            localStorage.removeItem('token');
+            // Token is invalid, clear it
+            localStorage. removeItem('token');
             setToken(null);
           }
         } catch (error) {
           console. error('Auth check failed:', error);
+          localStorage.removeItem('token');
+          setToken(null);
         }
       }
       setLoading(false);
@@ -54,7 +58,7 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (email, password) => {
-    // Ensure RSA is ready
+    // Always refresh RSA key before auth operations to ensure we have the latest
     if (!isPublicKeyLoaded()) {
       console.log('RSA not ready, fetching public key...');
       await fetchPublicKey();
@@ -62,7 +66,15 @@ export const AuthProvider = ({ children }) => {
 
     // Encrypt password with RSA
     console.log('Encrypting password with RSA...');
-    const encryptedPassword = encryptPassword(password);
+    let encryptedPassword;
+    try {
+      encryptedPassword = encryptPassword(password);
+    } catch (encryptError) {
+      // If encryption fails, try refreshing the key
+      console.log('Encryption failed, refreshing public key...');
+      await refreshPublicKey();
+      encryptedPassword = encryptPassword(password);
+    }
 
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
@@ -85,7 +97,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (email, password, name, profileType) => {
-    // Ensure RSA is ready
+    // Always refresh RSA key before auth operations to ensure we have the latest
     if (!isPublicKeyLoaded()) {
       console.log('RSA not ready, fetching public key.. .');
       await fetchPublicKey();
@@ -93,11 +105,19 @@ export const AuthProvider = ({ children }) => {
 
     // Encrypt password with RSA
     console. log('Encrypting password with RSA.. .');
-    const encryptedPassword = encryptPassword(password);
+    let encryptedPassword;
+    try {
+      encryptedPassword = encryptPassword(password);
+    } catch (encryptError) {
+      // If encryption fails, try refreshing the key
+      console.log('Encryption failed, refreshing public key...');
+      await refreshPublicKey();
+      encryptedPassword = encryptPassword(password);
+    }
 
     const response = await fetch(`${API_URL}/auth/register`, {
-      method: 'POST',
-      headers:  {
+      method:  'POST',
+      headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ email, encryptedPassword, name, profileType })
@@ -106,11 +126,11 @@ export const AuthProvider = ({ children }) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || 'Registration failed');
+      throw new Error(data. error || 'Registration failed');
     }
 
     localStorage.setItem('token', data.token);
-    setToken(data.token);
+    setToken(data. token);
     setUser(data.user);
     return data;
   };
