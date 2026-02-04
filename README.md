@@ -13,10 +13,66 @@
 
 **A full-stack stock trading simulation platform featuring LSTM neural network predictions, RSA-encrypted authentication, and real-time market analysis.**
 
-[Features](#-features) • [Demo](#-demo) • [Installation](#-installation) • [Architecture](#-architecture) • [API Reference](#-api-reference) • [Contributing](#-contributing)
+[Quick Start](#-quick-start) • [Features](#-features) • [Demo](#-demo) • [Installation](#-installation) • [Architecture](#-architecture) • [API Reference](#-api-reference) • [Contributing](#-contributing)
 
 </div>
 ---
+
+## 🚀 Quick Start
+
+### Option 1: Docker (Recommended)
+
+The fastest way to run StockAnalytica is using Docker Compose:
+
+```bash
+# Clone the repository
+git clone https://github.com/JaseWils/stockanalytica.git
+cd stockanalytica
+
+# Start all services with Docker
+docker compose up --build
+
+# Access the application at http://localhost:3000
+# After the services start, seed the database by visiting:
+# http://localhost:5000/api/stocks/seed
+```
+
+That's it! All services (MongoDB, Backend, Prediction Service, and Frontend) will start automatically.
+
+### Option 2: Manual Setup
+
+If you prefer to run services manually:
+
+```bash
+# 1. Start MongoDB (requires MongoDB installed locally)
+# Or use: docker run -d -p 27017:27017 --name mongodb mongo:6
+
+# 2. Start Backend (in terminal 1)
+cd backend
+npm install
+cp .env.example .env
+npm run dev
+
+# 3. Start Prediction Service (in terminal 2)
+cd prediction-service
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+python app.py
+
+# 4. Start Frontend (in terminal 3)
+cd frontend
+npm install
+cp .env.example .env
+npm start
+
+# 5. Seed the database
+# Visit: http://localhost:5000/api/stocks/seed
+
+# 6. Access the app at http://localhost:3000
+```
+
+For detailed configuration and troubleshooting, see the [Installation](#-installation) section below.
 
 ---
 
@@ -63,7 +119,7 @@
 ![Login Screen](docs/images/login.png)
 
 ### Market Overview
-![Market Overview](docs/images/market. png)
+![Market Overview](docs/images/market.png)
 
 ### AI Prediction Modal
 ![AI Prediction](docs/images/prediction.png)
@@ -141,7 +197,7 @@ cd frontend
 npm install
 
 # Create environment file
-cp . env.example .env
+cp .env.example .env
 ```
 
 **Frontend `.env` configuration:**
@@ -230,7 +286,7 @@ stockanalytica/
 ├── 📂 prediction-service/      # Python ML Service
 │   ├── app.py                 # Flask API server
 │   ├── requirements.txt       # Python dependencies
-│   └── test. html              # Standalone test page
+│   └── test.html              # Standalone test page
 │
 ├── docker-compose.yml         # Docker configuration
 └── README.md                  # This file
@@ -269,11 +325,11 @@ Content-Type: application/json
 #### Login
 ```http
 POST /api/auth/login
-Content-Type:  application/json
+Content-Type: application/json
 
 {
-  "email":  "user@example. com",
-  "encryptedPassword":  "RSA_ENCRYPTED_STRING"
+  "email": "user@example.com",
+  "encryptedPassword": "RSA_ENCRYPTED_STRING"
 }
 ```
 
@@ -293,7 +349,7 @@ GET /api/stocks/seed
 
 #### Get Stock Prediction
 ```http
-GET http://localhost:5001/api/predict/{SYMBOL}? days=90
+GET http://localhost:5001/api/predict/{SYMBOL}?days=90
 ```
 **Response:**
 ```json
@@ -304,11 +360,11 @@ GET http://localhost:5001/api/predict/{SYMBOL}? days=90
     "current_price": 178.50,
     "predicted_price": 195.23,
     "price_change": 16.73,
-    "price_change_percent":  9.37,
+    "price_change_percent": 9.37,
     "recommendation": "BUY",
     "recommendation_color": "#00ff88"
   },
-  "chart":  "BASE64_ENCODED_PNG",
+  "chart": "BASE64_ENCODED_PNG",
   "model_metrics": {
     "mse": 12.45,
     "r2_score": 0.87
@@ -332,7 +388,7 @@ Authorization: Bearer {JWT_TOKEN}
 #### Buy Stock
 ```http
 POST /api/payment/buy
-Authorization:  Bearer {JWT_TOKEN}
+Authorization: Bearer {JWT_TOKEN}
 Content-Type: application/json
 
 {
@@ -420,7 +476,7 @@ docker-compose up -d
 cd backend
 heroku create stockanalytica-api
 heroku config:set MONGODB_URI=your_mongodb_atlas_uri
-heroku config: set JWT_SECRET=your_production_secret
+heroku config:set JWT_SECRET=your_production_secret
 git push heroku main
 ```
 
@@ -456,17 +512,74 @@ npm test
 
 ### Test Prediction API
 ```bash
-curl http://localhost:5001/api/predict/AAPL? days=90
+curl http://localhost:5001/api/predict/AAPL?days=90
 ```
+
+---
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### Port Already in Use
+If you get an error that a port is already in use:
+```bash
+# Find and kill the process using the port (example for port 3000)
+# Linux/Mac:
+lsof -ti:3000 | xargs kill -9
+
+# Windows:
+netstat -ano | findstr :3000
+taskkill /PID <PID> /F
+```
+
+#### MongoDB Connection Error
+If the backend can't connect to MongoDB:
+- Make sure MongoDB is running: `docker ps` or check your local MongoDB service
+- Verify the `MONGODB_URI` in `backend/.env` is correct
+- For Docker: Use `mongodb://mongodb:27017/stockanalytica`
+- For local: Use `mongodb://localhost:27017/stockanalytica`
+
+#### Frontend Can't Connect to Backend
+If the frontend shows connection errors:
+- Ensure the backend is running on port 5000
+- Check that `REACT_APP_API_URL` in `frontend/.env` is set to `http://localhost:5000/api`
+- Clear your browser cache and restart the frontend
+
+#### Prediction Service Errors
+If predictions fail:
+- Ensure Python 3.10+ is installed: `python --version`
+- Check that all dependencies are installed: `pip list`
+- Verify the service is running on port 5001
+- Check `REACT_APP_PREDICTION_API_URL` in `frontend/.env`
+
+#### Docker Issues
+If Docker containers won't start:
+```bash
+# Stop all containers
+docker compose down
+
+# Remove all containers and volumes
+docker compose down -v
+
+# Rebuild and start fresh
+docker compose up --build
+```
+
+#### Database Seeding Issues
+If the seed endpoint doesn't work:
+- Make sure the backend is fully started before accessing the seed URL
+- Check backend logs for errors: `docker compose logs backend` or check the terminal
+- The seed process may take 30-60 seconds to complete
 
 ---
 
 ## 📈 Performance Optimization
 
-- **Caching**:  Redis caching for frequently accessed stock data
+- **Caching**: Redis caching for frequently accessed stock data
 - **Database Indexing**: MongoDB indexes on symbol and sector fields
 - **Lazy Loading**: React code splitting for faster initial load
-- **Model Caching**:  LSTM predictions cached for 1 hour per stock
+- **Model Caching**: LSTM predictions cached for 1 hour per stock
 
 ---
 
@@ -497,7 +610,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [Yahoo Finance](https://finance.yahoo.com/) for stock data
 - [PyTorch](https://pytorch.org/) for deep learning framework
-- [Tailwind CSS](https://tailwindcss. com/) for styling
+- [Tailwind CSS](https://tailwindcss.com/) for styling
 - [Lucide Icons](https://lucide.dev/) for beautiful icons
 
 ---
