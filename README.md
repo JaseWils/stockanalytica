@@ -63,7 +63,7 @@
 ![Login Screen](docs/images/login.png)
 
 ### Market Overview
-![Market Overview](docs/images/market. png)
+![Market Overview](docs/images/market.png)
 
 ### AI Prediction Modal
 ![AI Prediction](docs/images/prediction.png)
@@ -141,7 +141,7 @@ cd frontend
 npm install
 
 # Create environment file
-cp . env.example .env
+cp .env.example .env
 ```
 
 **Frontend `.env` configuration:**
@@ -230,7 +230,7 @@ stockanalytica/
 ├── 📂 prediction-service/      # Python ML Service
 │   ├── app.py                 # Flask API server
 │   ├── requirements.txt       # Python dependencies
-│   └── test. html              # Standalone test page
+│   └── test.html              # Standalone test page
 │
 ├── docker-compose.yml         # Docker configuration
 └── README.md                  # This file
@@ -269,11 +269,11 @@ Content-Type: application/json
 #### Login
 ```http
 POST /api/auth/login
-Content-Type:  application/json
+Content-Type: application/json
 
 {
-  "email":  "user@example. com",
-  "encryptedPassword":  "RSA_ENCRYPTED_STRING"
+  "email": "user@example.com",
+  "encryptedPassword": "RSA_ENCRYPTED_STRING"
 }
 ```
 
@@ -293,7 +293,7 @@ GET /api/stocks/seed
 
 #### Get Stock Prediction
 ```http
-GET http://localhost:5001/api/predict/{SYMBOL}? days=90
+GET http://localhost:5001/api/predict/{SYMBOL}?days=90
 ```
 **Response:**
 ```json
@@ -304,11 +304,11 @@ GET http://localhost:5001/api/predict/{SYMBOL}? days=90
     "current_price": 178.50,
     "predicted_price": 195.23,
     "price_change": 16.73,
-    "price_change_percent":  9.37,
+    "price_change_percent": 9.37,
     "recommendation": "BUY",
     "recommendation_color": "#00ff88"
   },
-  "chart":  "BASE64_ENCODED_PNG",
+  "chart": "BASE64_ENCODED_PNG",
   "model_metrics": {
     "mse": 12.45,
     "r2_score": 0.87
@@ -332,7 +332,7 @@ Authorization: Bearer {JWT_TOKEN}
 #### Buy Stock
 ```http
 POST /api/payment/buy
-Authorization:  Bearer {JWT_TOKEN}
+Authorization: Bearer {JWT_TOKEN}
 Content-Type: application/json
 
 {
@@ -420,7 +420,7 @@ docker-compose up -d
 cd backend
 heroku create stockanalytica-api
 heroku config:set MONGODB_URI=your_mongodb_atlas_uri
-heroku config: set JWT_SECRET=your_production_secret
+heroku config:set JWT_SECRET=your_production_secret
 git push heroku main
 ```
 
@@ -456,17 +456,17 @@ npm test
 
 ### Test Prediction API
 ```bash
-curl http://localhost:5001/api/predict/AAPL? days=90
+curl http://localhost:5001/api/predict/AAPL?days=90
 ```
 
 ---
 
 ## 📈 Performance Optimization
 
-- **Caching**:  Redis caching for frequently accessed stock data
+- **Caching**: Redis caching for frequently accessed stock data
 - **Database Indexing**: MongoDB indexes on symbol and sector fields
 - **Lazy Loading**: React code splitting for faster initial load
-- **Model Caching**:  LSTM predictions cached for 1 hour per stock
+- **Model Caching**: LSTM predictions cached for 1 hour per stock
 
 ---
 
@@ -497,7 +497,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [Yahoo Finance](https://finance.yahoo.com/) for stock data
 - [PyTorch](https://pytorch.org/) for deep learning framework
-- [Tailwind CSS](https://tailwindcss. com/) for styling
+- [Tailwind CSS](https://tailwindcss.com/) for styling
 - [Lucide Icons](https://lucide.dev/) for beautiful icons
 
 ---
